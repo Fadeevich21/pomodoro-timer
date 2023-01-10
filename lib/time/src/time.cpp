@@ -1,4 +1,5 @@
 #include "time.hpp"
+#include <Arduino.h>
 
 #define NUMBER_SECONDS_IN_MINUTE 60
 #define NUMBER_MINUTES_IN_HOUR 60
@@ -57,11 +58,26 @@ Time::Time(const uint8_t hour, const uint8_t minute,
     set_time(hour, minute, second);
 }
 
+Time::Time(const char *const time_str) {
+    this->set_time(time_str);
+}
+
 void Time::set_time(const uint8_t hour, const uint8_t minute,
                     const uint8_t second) {
     this->hour = hour;
     this->minute = minute;
     this->second = second;
+}
+
+void Time::set_time(const char time_str[9]) {
+    this->hour = (time_str[0] - '0') * 10 + 
+                 time_str[1] - '0';
+
+    this->minute = (time_str[3] - '0') * 10 + 
+                   time_str[4] - '0';
+
+    this->second = (time_str[6] - '0') * 10 + 
+                   time_str[7] - '0';
 }
 
 Time& Time::operator++() {
@@ -81,6 +97,18 @@ Time& Time::operator--() {
     this->decrement_second();
     
     return *this;
+}
+
+bool Time::operator!=(const Time& rhs) const {
+    return this->hour != rhs.hour ||
+           this->minute != rhs.minute ||
+           this->second != rhs.second;
+}
+
+bool Time::operator!=(const char *const time_str) const {
+    Time time(time_str);
+
+    return *this != time;
 }
 
 Time Time::operator--(int) {

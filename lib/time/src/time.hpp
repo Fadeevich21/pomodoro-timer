@@ -20,15 +20,20 @@ public:
     Time();
     Time(const uint8_t hour, const uint8_t minute,
          const uint8_t second);
-    
+    Time(const char time_str[9]);
+
     void set_time(const uint8_t hour, const uint8_t minute,
                   const uint8_t second);
+    void set_time(const char time_str[9]);
 
     Time operator++(int);
     Time& operator++();
 
     Time operator--(int);
     Time& operator--();
+
+    bool operator!=(const Time& rhs) const;
+    bool operator!=(const char time_str[9]) const;
 
     char* get_time_str() const;
 };
