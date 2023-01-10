@@ -80,15 +80,22 @@ void Time::set_time(const char time_str[9]) {
                    time_str[7] - '0';
 }
 
+Time Time::operator++(int) {
+    Time tmp = *this;
+    ++tmp;
+
+    return tmp;
+}
+
 Time& Time::operator++() {
     this->increment_second();
     
     return *this;
 }
 
-Time Time::operator++(int) {
+Time Time::operator--(int) {
     Time tmp = *this;
-    ++tmp;
+    --tmp;
 
     return tmp;
 }
@@ -109,13 +116,6 @@ bool Time::operator!=(const char *const time_str) const {
     Time time(time_str);
 
     return *this != time;
-}
-
-Time Time::operator--(int) {
-    Time tmp = *this;
-    --tmp;
-
-    return tmp;
 }
 
 char *Time::get_time_str() const {
